@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE = "anatoliy.kochubey2962@gmail.com/ci-cd-demo"
+        IMAGE = "Anatoliy.Kochubey2962/ci-cd-demo"
     }
 
     stages {
