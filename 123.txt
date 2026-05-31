@@ -1,0 +1,13 @@
+Швидкий тест
+
+Зроби будь-яку зміну:
+
+echo "test" >> README.md
+git add .
+git commit -m "test webhook"
+git push
+
+Після цього дивись:
+
+GitHub webhook (200 OK)
+Jenkins > Build History (новий build)

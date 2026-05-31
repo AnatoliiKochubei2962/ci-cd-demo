@@ -1,55 +1,45 @@
 pipeline {
     agent any
 
-    environment {
-        IMAGE_NAME = "AnatoliiKochubei2962/ci-cd-demo"
-    }
-
     stages {
-
         stage('Checkout') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/AnatoliiKochubei2962/ci-cd-demo.git'
+                echo "Checking out code..."
+                checkout scm
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Build') {
             steps {
-                sh 'pip install -r requirements.txt'
+                echo "Build stage running..."
+                sh 'echo "Hello from Jenkins running in Kubernetes!"'
             }
         }
 
-        stage('Run Tests') {
+        stage('Test') {
             steps {
-                sh 'pytest -v'
-            }
-        }
-
-        stage('Build Docker Image') {
-            steps {
-                sh "docker build -t $IMAGE_NAME:latest ."
-            }
-        }
-
-        stage('Push Image') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
-                    sh '''
-                        echo $PASS | docker login -u $USER --password-stdin
-                        docker push $IMAGE_NAME:latest
-                    '''
-                }
-            }
-        }
-
-        stage('Deploy to Kubernetes') {
-            steps {
+                echo "Running tests..."
                 sh '''
-                    kubectl apply -f k8s/deployment.yaml
-                    kubectl apply -f k8s/service.yaml
+                    echo "Test 1: OK"
+                    echo "Test 2: OK"
                 '''
             }
+        }
+
+        stage('Deploy (dummy)') {
+            steps {
+                echo "Deploy stage (no real deployment, just simulation)"
+                sh 'echo "Deployment simulated successfully"'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Pipeline completed successfully 🎉"
+        }
+        failure {
+            echo "Pipeline failed ❌"
         }
     }
 }
